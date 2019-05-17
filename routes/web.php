@@ -11,17 +11,28 @@
 |
 */
 
+Auth::routes(['verify' => true]);
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
+Route::get('/images/{filename}');
 
 // Admin Routes
-Route::name('admin.')->group(function(){
-    Route::group(['prefix'=>'admin'],function(){
-        Route::resource('products','Admin\ProductController');
+Route::name('admin.')->group(function () {
+    Route::group(['prefix' => 'admin'], function () {
+        Route::resource('products', 'Admin\ProductController');
+        Route::get('/products/image/{imageName}', 'Admin\ProductController@image')->name('products.image');
+
+        Route::resource('orders', 'Admin\OrderController');
     });
 });
+Route::get('/products','ProductController@index')->name('products.index');
+Route::get('/products/{id}','ProductController@show')->name('products.show');
+Route::get('/products/image/{imageName}', 'ProductController@image')->name('products.image');
+Route::get('/carts', 'CartController@index')->name('carts.index');
+Route::get('/carts/add/{id}', 'CartController@add')->name('carts.add');
+Route::patch('carts/update', 'CartController@update')->name('carts.update');
+Route::delete('carts/remove', 'CartController@remove')->name('carts.remove');

@@ -11,4 +11,9 @@ class Image extends Model
         'image_src',
         'image_desc',
     ];
+
+    public function product()
+    {
+        return $this->belongsTo('App\Models\Product');
+    }
 }

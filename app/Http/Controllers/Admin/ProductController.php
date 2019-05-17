@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Image;
 use Auth;
 
 class ProductController extends Controller
@@ -21,7 +22,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::where(['user_id' => Auth::user()->id])->paginate(10);
+        $products = Product::where(['user_id' => Auth::user()->id])->paginate(5);
 
         return view('admin.products.index', compact('products'));
     }
@@ -55,8 +56,26 @@ class ProductController extends Controller
         $product->user_id = Auth::user()->id;
         $product->name = $request->post('name');
         $product->price = $request->post('price');
-        $product->description = $request->post('description');
+        $product->description = strip_tags($request->post('description'));
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $idx => $file) {
+                if($idx == 0) {
+                    $product->image_url = $file->getClientOriginalName();
+                }
+            }
+        }
         $product->save();
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $image = new Image();
+                $image->image_title = $product->name;
+                $image->image_src = $file->getClientOriginalName();
+                $image->image_desc = $product->description;
+                $product->images()->save($image);
+                $file->move(public_path().'/images', $image->image_src);
+            }
+        }
 
         return redirect('admin/products')->with('success', 'Product success created.');
     }
@@ -70,7 +89,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::where(['user_id' => Auth::user()->id])->findOrFail($id);
+        $product = Product::where(['user_id' => Auth::user()->id])->with('images')->findOrFail($id);
 
         return view('admin.products.show', compact('product'));
     }
@@ -109,8 +128,26 @@ class ProductController extends Controller
         $product->user_id = Auth::user()->id;
         $product->name = $request->post('name');
         $product->price = $request->post('price');
-        $product->description = $request->post('description');
+        $product->description = strip_tags($request->post('description'));
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $idx => $file) {
+                if($idx == 0) {
+                    $product->image_url = $file->getClientOriginalName();
+                }
+            }
+        }
         $product->save();
+        if ($request->hasFile('images')) {
+            $product->images()->delete();
+            foreach ($request->file('images') as $file) {
+                $image = new Image();
+                $image->image_title = $product->name;
+                $image->image_src = $file->getClientOriginalName();
+                $image->image_desc = $product->description;
+                $product->images()->save($image);
+                $file->move(public_path().'/images', $image->image_src);
+            }
+        }
 
         return redirect('admin/products')->with('success', 'Product success updated.');
     }

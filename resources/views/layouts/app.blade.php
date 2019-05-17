@@ -9,9 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -20,11 +18,13 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    @include('layouts.script')
+    @include('products.style')
 </head>
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+        <nav class=" navbar navbar-expand-sm bg-Bisque navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -37,6 +37,13 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+                    <!-- carts -->
+                    <li class="nav-item">
+                        <a href="{{ route('carts.index') }}" class="btn btn-primary btn-block">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart <span class="badge
+                            badge-pill badge-danger">{{ count(session('cart',[])) }}</span>
+                        </a>
+                    </li>
                         @if (Auth::check())
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -45,8 +52,20 @@
                         </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('admin.products.index')
-                        }}">List</a>
+                        }}">Daftar Product</a>
                                 <a class="dropdown-item" href="{{ route('admin.products.create')
+                        }}">Tambah</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                        Order
+                        </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('admin.orders.index')
+                        }}">Daftar Order</a>
+                                <a class="dropdown-item" href="{{ route('admin.orders.create')
                         }}">Tambah</a>
                             </div>
                         </li>
@@ -87,12 +106,13 @@
                 </div>
             </div>
         </nav>
+        
 
         <main class="py-4">
             @yield('content')
         </main>
     </div>
-    @yield('scripts')
+    
 </body>
 
 </html>

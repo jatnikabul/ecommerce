@@ -19,7 +19,7 @@
                             </div>
                         </div>
                         @endif
-                        <form action="{{ route('admin.products.store') }}" method="POST">
+                        <form action="{{ route('admin.products.store') }}" enctype="multipart/form-data" method="POST">
                             @csrf
                             <div class="form-group">
                                 <label>Name</label>
@@ -31,7 +31,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Description</label>
-                                <textarea type="number" class="form-control" rows="3" name="description"></textarea>
+                                <textarea type="number" class="form-control" rows="3" name="description" id="description"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="images">Images</label>
+                                <input type="file" class="form-control-file" name="images[]" multiple>
                             </div>
                             <div class="form-group">
                                 <a href="{{ route('admin.products.index') }}" class="btn btn-danger">Back</a>

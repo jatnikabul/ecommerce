@@ -4,25 +4,25 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header">List Products</div>
+                <div class="card-header">Farihaan Products</div>
                 <div class="card-body">
                     <div style="margin-bottom:10px;">
-                        <a href="{{ route('admin.products.create') }}" class="btn btn-primary">Add</a>
+                        <a href="{{ route('admin.products.create') }}" class="btn btn-success">Add</a>
                     </div>
                     @if ($message = Session::get('success'))
                     <div class="alert alert-success">
                         <p>{{ $message }}</p>
                     </div>
-                    @endif
-                    <div class="table table-responsive">
+                    @endif 
+                    <div class="table table-striped">
                         <table class="table table-sm">
                             <thead>
                                 <tr>
                                     <th style="text-align:center;">#</th>
-                                    <th style="text-align:center;">Name</th>
-                                    <th style="text-align:center;">Price</th>
-                                    <th style="text-align:center;">Created Date</th>
-                                    <th style="text-align:center;" colspan="3">Actions</th>
+                                    <th style="text-align:center;">Nama</th>
+                                    <th style="text-align:center;">Harga</th>
+                                    <th style="text-align:center;">Tanggal Date</th>
+                                    <th style="text-align:center;" colspan="3">Update</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -35,9 +35,9 @@
                                     <td style="text-align:center;">
                                         <form action="{{ route('admin.products.destroy',$product->id) }}" method="POST">
                                             @csrf @method('DELETE')
-                                            <a class="btn btn-info btn-sm" href="{{ route('admin.products.show',$product->id) }}">Show</a>
-                                            <a class="btn btn-primary btn-sm" href="{{ route('admin.products.edit',$product->id) }}">Edit</a>
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure ?');">Delete</button>
+                                            <a class="btn btn-dark btn-sm" href="{{ route('admin.products.show',$product->id) }}">Tampil</a>
+                                            <a class="btn btn-warning btn-sm" href="{{ route('admin.products.edit',$product->id) }}">Ganti</a>
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure ?');">Hapus</button>
                                         </form>
                                     </td>
                                 </tr>

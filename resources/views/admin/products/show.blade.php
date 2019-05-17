@@ -21,6 +21,16 @@
                                 <td class="col-xs-2">Description</td>
                                 <td class="col-xs-2">{{ $product->description }}</td>
                             </tr>
+                            @if(!$product->images()->get()->isEmpty())
+                            <tr>
+                                <td class="col-xs-2">Images</td>
+                                @foreach($product->images()->get() as $image)
+                                <td class="col-xs-2">
+                                    <image src="{{ asset('/images/'.$image->image_src) }}" class="img-thumbnail img-fluid" alt="{{ $image->image_desc }}" style="width:200px;height:200px;"></image>
+                                </td>
+                                @endforeach
+                            </tr>
+                            @endif
                         </tbody>
                     </table>
                     <div class="form-group" style="margin-top:40px">
@@ -31,4 +41,13 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script type="text/javascript">
+    tinymce.init({
+        selector: '#'
+    });
+
+</script>
 @endsection

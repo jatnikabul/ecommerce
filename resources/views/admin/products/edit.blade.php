@@ -19,19 +19,23 @@
                             </div>
                         </div>
                         @endif
-                        <form action="{{ route('admin.products.update',$product->id) }}" method="POST">
+                        <form action="{{ route('admin.products.update',$product->id) }}" enctype="multipart/form-data" method="POST">
                             @csrf @method('PATCH')
                             <div class="form-group">
                                 <label>Name</label>
-                                <input type="text" class="form-control" placeholder="Product Name" name="name" value={{ $product->name}}>
+                                <input type="text" class="form-control" placeholder="Product Name" name="name" value="{{ $product->name }}">
                             </div>
                             <div class="form-group">
                                 <label>Price</label>
-                                <input type="number" class="form-control" placeholder="Product Price" name="price" value={{ $product->price}}>
+                                <input type="number" class="form-control" placeholder="Product Price" name="price" value="{{ $product->price }}">
                             </div>
                             <div class="form-group">
                                 <label>Description</label>
-                                <textarea type="number" class="form-control" rows="3" name="description">{{ $product->description }}</textarea>
+                                <textarea type="number" class="form-control" rows="3" name="description" id="deskripsi">{{ $product->description }}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="images">Images</label>
+                                <input type="file" class="form-control-file" name="images[]" id="images" multiple>
                             </div>
                             <div class="form-group">
                                 <a href="{{ route('admin.products.index') }}" class="btn btn-danger">Back</a>
